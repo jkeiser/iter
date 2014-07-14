@@ -22,6 +22,23 @@ type Iterator struct {
 	Close func()
 }
 
+// Use to create an iterator from a single closure.  retun nil to stop iteration.
+//
+//   iter.NewSimple(func() interface{} { return x*2 })
+func NewSimple(f func() interface{}) Iterator {
+	return Iterator{
+		Next: func() (interface{}, error) {
+			val := f()
+			if val == nil {
+				return nil, FINISHED
+			} else {
+				return f, nil
+			}
+		},
+		Close: func() {},
+	}
+}
+
 // Transform values in the input.
 //   iterator.Map(func(item interface{}) interface{} { item.(int) * 2 })
 func (iterator Iterator) Map(mapper func(interface{}) interface{}) Iterator {
