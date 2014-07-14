@@ -90,6 +90,9 @@ Raw iteration looks like this:
     ... // do stuff with value
     item, err = iterator.Next()
   }
+  if err != iter.FINISHED {
+    ... // handle error
+  }
 
 Background goroutine iteration (using channels) deserves special mention:
 
